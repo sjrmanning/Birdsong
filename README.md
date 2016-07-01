@@ -1,4 +1,6 @@
-![Birdsong: Phoenix Channels WebSockets client for iOS & OS X](https://raw.githubusercontent.com/sjrmanning/Birdsong/assets/birdsong.png)
+<p align="center">
+    <img src="https://raw.githubusercontent.com/sjrmanning/Birdsong/assets/birdsong.png" width="483px" alt="Birdsong: Phoenix Channels WebSockets client for iOS & OS X">
+</p>
 
 # Birdsong
 
