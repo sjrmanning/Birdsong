@@ -1,0 +1,11 @@
+use_frameworks!
+
+target 'Birdsong_Example' do
+  pod 'Birdsong', :path => '../'
+
+  target 'Birdsong_Tests' do
+    inherit! :search_paths
+
+    
+  end
+end
