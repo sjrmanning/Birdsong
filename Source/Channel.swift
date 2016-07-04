@@ -110,7 +110,7 @@ public class Channel {
         return self
     }
 
-    public func onNewState(callback: Presence -> ()) -> Self {
+    public func onPresenceUpdate(callback: Presence -> ()) -> Self {
         presenceStateCallback = callback
         return self
     }
