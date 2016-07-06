@@ -13,7 +13,7 @@ public final class Presence {
 
     public typealias PresenceState = [String: [Meta]]
     public typealias Diff = [String: [String: [Meta]]]
-    public typealias Meta = [String: String]
+    public typealias Meta = [String: AnyObject]
 
     // MARK: - Properties
 
@@ -75,11 +75,8 @@ public final class Presence {
             }
 
             // Otherwise, we need to find the phx_ref keys to delete.
-            let refsToDelete = entry["metas"]?.map { meta -> String in
-                return meta["phx_ref"]!
-            }
-
-            existing = existing.filter { !refsToDelete!.contains($0["phx_ref"]!) }
+            let refsToDelete = entry["metas"]?.map { $0["phx_ref"] as! String }
+            existing = existing.filter { !refsToDelete!.contains($0["phx_ref"]! as! String) }
             state[id] = existing
         }
     }
