@@ -4,7 +4,7 @@
 
 # Birdsong
 
-An iOS & OS X WebSockets client for use with [Phoenix](http://www.phoenixframework.org) [Channels](http://www.phoenixframework.org/docs/channels). Supports Phoenix Presence!
+An iOS & OS X WebSockets client for use with [Phoenix](http://www.phoenixframework.org) [Channels](http://www.phoenixframework.org/docs/channels). Supports [Phoenix Presence](https://hexdocs.pm/phoenix/1.2.0/Phoenix.Presence.html)!
 
 
 ## Usage
