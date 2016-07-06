@@ -98,12 +98,39 @@ public final class Presence {
 
     // MARK: - Presence access convenience
 
-    func metas(id id: String) -> [Meta]? {
+    public func metas(id id: String) -> [Meta]? {
         return state[id]
     }
 
-    func firstMeta(id id: String) -> Meta? {
+    public func firstMeta(id id: String) -> Meta? {
         return state[id]?.first
     }
 
+    public func firstMetas() -> [String: Meta] {
+        var result = [String: Meta]()
+        state.forEach { id, metas in
+            result[id] = metas.first
+        }
+
+        return result
+    }
+
+    public func firstMetaValue<T>(id id: String, key key: String) -> T? {
+        guard let meta = state[id]?.first, value = meta[key] as? T else {
+            return nil
+        }
+
+        return value
+    }
+
+    public func firstMetaValues<T>(key key: String) -> [T] {
+        var result = [T]()
+        state.forEach { id, metas in
+            if let meta = metas.first, value = meta[key] as? T {
+                result.append(value)
+            }
+        }
+
+        return result
+    }
 }
