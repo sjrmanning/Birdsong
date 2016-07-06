@@ -9,10 +9,6 @@
 import Foundation
 
 public class Channel {
-    // MARK: - Convenience typealias
-
-    public typealias Presence = [String: [String: AnyObject]]
-
     // MARK: - Properties
 
     public let topic: String
@@ -30,7 +26,7 @@ public class Channel {
         self.topic = topic
         self.params = params
         self.state = .Closed
-        self.presence = [:]
+        self.presence = Presence(state: Presence.PresenceState())
 
         // Register presence handling.
         on("presence_state", callback: presenceState)
@@ -63,36 +59,14 @@ public class Channel {
 
     // MARK: - Presence
 
-    private func getPresenceMeta(entry: AnyObject) -> [String: AnyObject]? {
-        guard let metas = entry["metas"] as? [[String: AnyObject]] else {
-            return nil
-        }
-
-        return metas.first
-    }
-
     private func presenceState(response: Response) {
-        response.payload.forEach { id, dict in
-            presence[id] = getPresenceMeta(dict)
-        }
+        presence.sync(response)
 
         presenceStateCallback?(presence)
     }
 
     private func presenceDiff(response: Response) {
-        if let leaves = response.payload["leaves"] as? [String: AnyObject] {
-            leaves.forEach { id, dict in
-                presence.removeValueForKey(id)
-            }
-        }
-
-        if let joins = response.payload["joins"] as? [String: AnyObject] {
-            joins.forEach { id, dict in
-                presence[id] = getPresenceMeta(dict)
-            }
-        }
-
-        presenceStateCallback?(presence)
+        presence.sync(response)
     }
 
     // MARK: - Raw events
