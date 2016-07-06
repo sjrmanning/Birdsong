@@ -4,7 +4,7 @@
 
 # Birdsong
 
-An iOS & OS X WebSockets client for use with [Phoenix](http://www.phoenixframework.org) [Channels](http://www.phoenixframework.org/docs/channels).
+An iOS & OS X WebSockets client for use with [Phoenix](http://www.phoenixframework.org) [Channels](http://www.phoenixframework.org/docs/channels). Supports Phoenix Presence!
 
 
 ## Usage
@@ -33,6 +33,20 @@ socket.onConnect = {
         .receive("error", callback: { reason in
             print("Message didn't send: \(reason)")
         })
+
+    // Presence support.
+    channel.presence.onStateChange = { newState in
+        // newState = dict where key = unique ID, value = array of metas.
+        print("New presence state: \(newState)")
+    }
+
+    channel.presence.onJoin = { id, meta in
+        print("Join: user with id \(id) with meta entry: \(meta)")
+    }
+
+    channel.presence.onLeave = { id, meta in
+        print("Leave: user with id \(id) with meta entry: \(meta)")
+    }
 }
 ```
 
