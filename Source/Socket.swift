@@ -42,6 +42,24 @@ public final class Socket {
         socket.selfSignedSSL = selfSignedSSL
     }
 
+    public convenience init(url: String, params: [String: String]? = nil,
+                            selfSignedSSL: Bool = false) {
+        if let parsedURL = NSURL(string: url) {
+            self.init(url: parsedURL, params: params, selfSignedSSL: selfSignedSSL)
+        }
+        else {
+            print("[Birdsong] Invalid URL in init. Defaulting to localhost URL.")
+            self.init()
+        }
+    }
+
+    public convenience init(prot: String = "http", host: String = "localhost", port: Int = 4000,
+                            path: String = "socket", transport: String = "websocket",
+                            params: [String: String]? = nil, selfSignedSSL: Bool = false) {
+        let url = "\(prot)://\(host):\(port)/\(path)/\(transport)"
+        self.init(url: url, params: params, selfSignedSSL: selfSignedSSL)
+    }
+
     // MARK: - Connection
 
     public func connect() {
