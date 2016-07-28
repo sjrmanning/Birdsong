@@ -72,7 +72,7 @@ public final class Socket {
     }
 
     public func disconnect() {
-        if socket.isConnected {
+        if !socket.isConnected {
             return
         }
 
