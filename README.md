@@ -56,13 +56,13 @@ To run the example project, clone the repo, and run `pod install` from the Examp
 
 ## Installation
 
-Not available on CocoaPods yet, however you can use it with:
+Available on CocoaPods:
 
 ```ruby
 platform :ios, '9.0'
 use_frameworks!
 
-pod 'Birdsong', :git => 'https://github.com/sjrmanning/Birdsong.git'
+pod 'Birdsong', '~> 0.2'
 ```
 
 ## Author
