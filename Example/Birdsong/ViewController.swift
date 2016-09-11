@@ -43,9 +43,9 @@ class ViewController: UIViewController {
         let viewSize = view.frame.size
 
         lastMessageLabel.frame = CGRect(x: viewSize.width * 0.1,
-                                            y: viewSize.height * 0.15,
-                                            width: viewSize.width * 0.8,
-                                            height: 100)
+                                        y: viewSize.height * 0.15,
+                                        width: viewSize.width * 0.8,
+                                        height: 100)
 
         sendMessageButton.setTitle("Send test message", for: UIControlState())
         sendMessageButton.setTitleColor(UIColor.red, for: UIControlState())
@@ -54,9 +54,9 @@ class ViewController: UIViewController {
                                     for: .touchUpInside)
 
         sendMessageButton.frame = CGRect(x: viewSize.width * 0.25,
-                                             y: viewSize.height * 0.1,
-                                             width: viewSize.width * 0.5,
-                                             height: 50)
+                                         y: viewSize.height * 0.1,
+                                         width: viewSize.width * 0.5,
+                                         height: 50)
     }
 
     override func viewDidAppear(_ animated: Bool) {
