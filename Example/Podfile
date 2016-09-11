@@ -2,10 +2,11 @@ use_frameworks!
 
 target 'Birdsong_Example' do
   pod 'Birdsong', :path => '../'
+  pod 'Starscream', git: 'https://github.com/daltoniam/Starscream.git', branch: 'swift3'
 
   target 'Birdsong_Tests' do
     inherit! :search_paths
 
-    
+
   end
 end

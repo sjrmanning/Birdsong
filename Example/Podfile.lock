@@ -5,15 +5,24 @@ PODS:
 
 DEPENDENCIES:
   - Birdsong (from `../`)
+  - Starscream (from `https://github.com/daltoniam/Starscream.git`, branch `swift3`)
 
 EXTERNAL SOURCES:
   Birdsong:
     :path: "../"
+  Starscream:
+    :branch: swift3
+    :git: https://github.com/daltoniam/Starscream.git
+
+CHECKOUT OPTIONS:
+  Starscream:
+    :commit: b1472f2a99a747ffda35c43ac4eb58b73c59722a
+    :git: https://github.com/daltoniam/Starscream.git
 
 SPEC CHECKSUMS:
   Birdsong: e30ae1dd9b9e9314805c5776aa619c6bedfce21c
   Starscream: d662732354b40dd19ed1ece3e3c44c80b536b83c
 
-PODFILE CHECKSUM: 6ec599b355ecb57eae5bb4829391de34a5eb8370
+PODFILE CHECKSUM: adfea6ffbebddfd477f398379d306d8133185b12
 
 COCOAPODS: 1.0.1
