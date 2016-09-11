@@ -8,15 +8,15 @@
 
 import Foundation
 
-public class Response {
-    public let ref: String
-    public let topic: String
-    public let event: String
-    public let payload: Socket.Payload
+open class Response {
+    open let ref: String
+    open let topic: String
+    open let event: String
+    open let payload: Socket.Payload
 
-    init?(data: NSData) {
+    init?(data: Data) {
         do {
-            let jsonObject = try NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions()) as! Socket.Payload
+            let jsonObject = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions()) as! Socket.Payload
             if let ref = jsonObject["ref"] as? String {
                 self.ref = ref
             }

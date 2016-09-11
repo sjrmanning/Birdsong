@@ -8,38 +8,38 @@
 
 import Foundation
 
-public class Push {
-    public let topic: String
-    public let event: String
-    public let payload: [String: AnyObject]
+open class Push {
+    open let topic: String
+    open let event: String
+    open let payload: [String: AnyObject]
     let ref: String?
 
     var receivedStatus: String?
     var receivedResponse: Socket.Payload?
 
-    private var callbacks: [String: [(Socket.Payload) -> ()]] = [:]
-    private var alwaysCallbacks: [() -> ()] = []
+    fileprivate var callbacks: [String: [(Socket.Payload) -> ()]] = [:]
+    fileprivate var alwaysCallbacks: [() -> ()] = []
 
     // MARK: - JSON parsing
 
-    func toJson() throws -> NSData {
+    func toJson() throws -> Data {
         let dict = [
             "topic": topic,
             "event": event,
             "payload": payload,
             "ref": ref ?? ""
-        ]
+        ] as [String : Any]
 
-        return try NSJSONSerialization.dataWithJSONObject(dict, options: NSJSONWritingOptions())
+        return try JSONSerialization.data(withJSONObject: dict, options: JSONSerialization.WritingOptions())
     }
 
-    init(_ event: String, topic: String, payload: [String: AnyObject], ref: String = NSUUID().UUIDString) {
+    init(_ event: String, topic: String, payload: [String: AnyObject], ref: String = UUID().uuidString) {
         (self.topic, self.event, self.payload, self.ref) = (topic, event, payload, ref)
     }
 
     // MARK: - Callback registration
 
-    public func receive(status: String, callback: (Socket.Payload) -> ()) -> Self {
+    open func receive(_ status: String, callback: @escaping (Socket.Payload) -> ()) -> Self {
         if (receivedStatus == status) {
             callback(receivedResponse!)
         }
@@ -55,14 +55,14 @@ public class Push {
         return self
     }
 
-    public func always(callback: () -> ()) -> Self {
+    open func always(_ callback: @escaping () -> ()) -> Self {
         alwaysCallbacks.append(callback)
         return self
     }
 
     // MARK: - Response handling
 
-    func handleResponse(response: Response) {
+    func handleResponse(_ response: Response) {
         receivedStatus = response.payload["status"] as! String
         receivedResponse = response.payload
 
@@ -71,7 +71,7 @@ public class Push {
 
     func handleParseError() {
         receivedStatus = "error"
-        receivedResponse = ["reason": "Invalid payload request."]
+        receivedResponse = ["reason": "Invalid payload request." as AnyObject]
 
         fireCallbacksAndCleanup()
     }

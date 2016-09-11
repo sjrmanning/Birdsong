@@ -12,14 +12,14 @@ import Birdsong
 
 class ViewController: UIViewController {
 
-    let socket = Socket(url: NSURL(string: "http://localhost:4000/socket/websocket")!)
+    let socket = Socket(url: URL(string: "http://localhost:4000/socket/websocket")!)
     var channel: Channel?
 
     var lastMessageLabel: UILabel
     var sendMessageButton: UIButton
     var messageCount = 0
 
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         lastMessageLabel = UILabel()
         sendMessageButton = UIButton()
 
@@ -42,24 +42,24 @@ class ViewController: UIViewController {
 
         let viewSize = view.frame.size
 
-        lastMessageLabel.frame = CGRectMake(viewSize.width * 0.1,
-                                            viewSize.height * 0.15,
-                                            viewSize.width * 0.8,
-                                            100)
+        lastMessageLabel.frame = CGRect(x: viewSize.width * 0.1,
+                                            y: viewSize.height * 0.15,
+                                            width: viewSize.width * 0.8,
+                                            height: 100)
 
-        sendMessageButton.setTitle("Send test message", forState: .Normal)
-        sendMessageButton.setTitleColor(UIColor.redColor(), forState: .Normal)
+        sendMessageButton.setTitle("Send test message", for: UIControlState())
+        sendMessageButton.setTitleColor(UIColor.red, for: UIControlState())
         sendMessageButton.addTarget(self,
                                     action: #selector(sendMessage),
-                                    forControlEvents: .TouchUpInside)
+                                    for: .touchUpInside)
 
-        sendMessageButton.frame = CGRectMake(viewSize.width * 0.25,
-                                             viewSize.height * 0.1,
-                                             viewSize.width * 0.5,
-                                             50)
+        sendMessageButton.frame = CGRect(x: viewSize.width * 0.25,
+                                             y: viewSize.height * 0.1,
+                                             width: viewSize.width * 0.5,
+                                             height: 50)
     }
 
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
         // After connection, set up a channel and join it.

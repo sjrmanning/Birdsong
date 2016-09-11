@@ -17,13 +17,13 @@ public final class Presence {
 
     // MARK: - Properties
 
-    private(set) public var state: PresenceState
+    fileprivate(set) public var state: PresenceState
 
     // MARK: - Callbacks
 
-    public var onJoin: ((id: String, meta: Meta) -> ())?
-    public var onLeave: ((id: String, meta: Meta) -> ())?
-    public var onStateChange: ((state: PresenceState) -> ())?
+    public var onJoin: ((_ id: String, _ meta: Meta) -> ())?
+    public var onLeave: ((_ id: String, _ meta: Meta) -> ())?
+    public var onStateChange: ((_ state: PresenceState) -> ())?
 
     // MARK: - Initialisation
 
@@ -33,7 +33,7 @@ public final class Presence {
 
     // MARK: - Syncing
 
-    func sync(diff: Response) {
+    func sync(_ diff: Response) {
         // Initial state event
         if diff.event == "presence_state" {
             diff.payload.forEach{ id, entry in
@@ -51,14 +51,14 @@ public final class Presence {
             }
         }
 
-        onStateChange?(state: state)
+        onStateChange?(state)
     }
 
-    func syncLeaves(diff: Diff) {
+    func syncLeaves(_ diff: Diff) {
         defer {
             diff.forEach { id, entry in
                 if let metas = entry["metas"] {
-                    metas.forEach { onLeave?(id: id, meta: $0) }
+                    metas.forEach { onLeave?(id, $0) }
                 }
             }
         }
@@ -70,7 +70,7 @@ public final class Presence {
 
             // If there's only one entry for the id, just remove it.
             if existing.count == 1 {
-                state.removeValueForKey(id)
+                state.removeValue(forKey: id)
                 continue
             }
 
@@ -81,7 +81,7 @@ public final class Presence {
         }
     }
 
-    func syncJoins(diff: Diff) {
+    func syncJoins(_ diff: Diff) {
         diff.forEach { id, entry in
             let metas = entry["metas"]
 
@@ -92,17 +92,17 @@ public final class Presence {
                 state[id] = metas
             }
 
-            metas?.forEach { onJoin?(id: id, meta: $0) }
+            metas?.forEach { onJoin?(id, $0) }
         }
     }
 
     // MARK: - Presence access convenience
 
-    public func metas(id id: String) -> [Meta]? {
+    public func metas(id: String) -> [Meta]? {
         return state[id]
     }
 
-    public func firstMeta(id id: String) -> Meta? {
+    public func firstMeta(id: String) -> Meta? {
         return state[id]?.first
     }
 
@@ -115,18 +115,18 @@ public final class Presence {
         return result
     }
 
-    public func firstMetaValue<T>(id id: String, key key: String) -> T? {
-        guard let meta = state[id]?.first, value = meta[key] as? T else {
+    public func firstMetaValue<T>(id: String, key: String) -> T? {
+        guard let meta = state[id]?.first, let value = meta[key] as? T else {
             return nil
         }
 
         return value
     }
 
-    public func firstMetaValues<T>(key key: String) -> [T] {
+    public func firstMetaValues<T>(key: String) -> [T] {
         var result = [T]()
         state.forEach { id, metas in
-            if let meta = metas.first, value = meta[key] as? T {
+            if let meta = metas.first, let value = meta[key] as? T {
                 result.append(value)
             }
         }
