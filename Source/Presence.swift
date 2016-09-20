@@ -12,7 +12,7 @@ public final class Presence {
     // MARK: - Convenience typealiases
 
     public typealias PresenceState = [String: [Meta]]
-    public typealias Diff = [String: [String: [Meta]]]
+    public typealias Diff = [String: [String: Any]]
     public typealias Meta = [String: AnyObject]
 
     // MARK: - Properties
@@ -37,8 +37,10 @@ public final class Presence {
         // Initial state event
         if diff.event == "presence_state" {
             diff.payload.forEach{ id, entry in
-                if let entry = entry as? [String: [Meta]] {
-                    state[id] = entry["metas"]
+                if let entry = entry as? [String: Any] {
+                    if let metas = entry["metas"] as? [Meta] {
+                        state[id] = metas
+                    }
                 }
             }
         }
@@ -57,7 +59,7 @@ public final class Presence {
     func syncLeaves(_ diff: Diff) {
         defer {
             diff.forEach { id, entry in
-                if let metas = entry["metas"] {
+                if let metas = entry["metas"] as? [Meta] {
                     metas.forEach { onLeave?(id, $0) }
                 }
             }
@@ -75,7 +77,8 @@ public final class Presence {
             }
 
             // Otherwise, we need to find the phx_ref keys to delete.
-            let refsToDelete = entry["metas"]?.map { $0["phx_ref"] as! String }
+            let metas = entry["metas"] as? [Meta]
+            let refsToDelete = metas?.map { $0["phx_ref"] as! String }
             existing = existing.filter { !refsToDelete!.contains($0["phx_ref"]! as! String) }
             state[id] = existing
         }
@@ -83,7 +86,7 @@ public final class Presence {
 
     func syncJoins(_ diff: Diff) {
         diff.forEach { id, entry in
-            let metas = entry["metas"]
+            let metas = entry["metas"] as? [Meta]
 
             if var existing = state[id] {
                 existing += metas!
