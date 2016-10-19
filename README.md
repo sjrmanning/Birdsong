@@ -6,6 +6,8 @@
 
 An iOS & OS X WebSockets client for use with [Phoenix](http://www.phoenixframework.org) [Channels](http://www.phoenixframework.org/docs/channels). Supports [Phoenix Presence](https://hexdocs.pm/phoenix/1.2.0/Phoenix.Presence.html)!
 
+As of version 0.3.0, Birdsong requires Swift 3.0+. Please use version 0.2.2 if you need Swift 2.2 support.
+
 
 ## Usage
 
@@ -62,8 +64,10 @@ Available on CocoaPods:
 platform :ios, '9.0'
 use_frameworks!
 
-pod 'Birdsong', '~> 0.2'
+pod 'Birdsong', '~> 0.3'
 ```
+
+If you need Swift 2.2 compatibility, please use version `0.2.2`.
 
 ## Author
 
