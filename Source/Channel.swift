@@ -8,18 +8,18 @@
 
 import Foundation
 
-public class Channel {
+open class Channel {
     // MARK: - Properties
 
-    public let topic: String
-    public let params: Socket.Payload
-    private let socket: Socket
-    private(set) public var state: State
+    open let topic: String
+    open let params: Socket.Payload
+    fileprivate let socket: Socket
+    fileprivate(set) open var state: State
 
-    private(set) public var presence: Presence
+    fileprivate(set) open var presence: Presence
 
-    private var callbacks: [String: (Response) -> ()] = [:]
-    private var presenceStateCallback: (Presence -> ())?
+    fileprivate var callbacks: [String: (Response) -> ()] = [:]
+    fileprivate var presenceStateCallback: ((Presence) -> ())?
 
     init(socket: Socket, topic: String, params: Socket.Payload = [:]) {
         self.socket = socket
@@ -35,7 +35,7 @@ public class Channel {
 
     // MARK: - Control
 
-    public func join() -> Push {
+    open func join() -> Push {
         state = .Joining
 
         return send(Socket.Event.Join, payload: params).receive("ok", callback: { response in
@@ -43,7 +43,7 @@ public class Channel {
         })
     }
 
-    public func leave() -> Push {
+    open func leave() -> Push {
         state = .Leaving
 
         return send(Socket.Event.Leave, payload: [:]).receive("ok", callback: { response in
@@ -51,7 +51,7 @@ public class Channel {
         })
     }
 
-    public func send(event: String,
+    open func send(_ event: String,
                      payload: Socket.Payload) -> Push {
         let message = Push(event, topic: topic, payload: payload)
         return socket.send(message)
@@ -59,19 +59,19 @@ public class Channel {
 
     // MARK: - Presence
 
-    private func presenceState(response: Response) {
+    fileprivate func presenceState(_ response: Response) {
         presence.sync(response)
 
         presenceStateCallback?(presence)
     }
 
-    private func presenceDiff(response: Response) {
+    fileprivate func presenceDiff(_ response: Response) {
         presence.sync(response)
     }
 
     // MARK: - Raw events
 
-    func received(response: Response) {
+    func received(_ response: Response) {
         if let callback = callbacks[response.event] {
             callback(response)
         }
@@ -79,12 +79,12 @@ public class Channel {
 
     // MARK: - Callbacks
 
-    public func on(event: String, callback: Response -> ()) -> Self {
+    open func on(_ event: String, callback: @escaping (Response) -> ()) -> Self {
         callbacks[event] = callback
         return self
     }
 
-    public func onPresenceUpdate(callback: Presence -> ()) -> Self {
+    open func onPresenceUpdate(_ callback: @escaping (Presence) -> ()) -> Self {
         presenceStateCallback = callback
         return self
     }
