@@ -12,7 +12,7 @@ import Birdsong
 
 class ViewController: UIViewController {
 
-    let socket = Socket(url: URL(string: "http://localhost:4000/socket/websocket")!)
+    let socket = Socket(url: "http://localhost:4000/socket/websocket", params: ["user_id": "asdf"])
     var channel: Channel?
 
     var lastMessageLabel: UILabel

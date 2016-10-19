@@ -35,17 +35,15 @@ public final class Socket {
 
     // MARK: - Initialisation
 
-    public init(url: URL, params: [String: String]? = nil, selfSignedSSL: Bool = false) {
+    public init(url: URL, params: [String: String]? = nil) {
         heartbeatQueue = DispatchQueue(label: "com.ecksd.birdsong.hbqueue", attributes: [])
         socket = WebSocket(url: buildURL(url, params: params))
         socket.delegate = self
-        socket.selfSignedSSL = selfSignedSSL
     }
 
-    public convenience init(url: String, params: [String: String]? = nil,
-                            selfSignedSSL: Bool = false) {
+    public convenience init(url: String, params: [String: String]? = nil) {
         if let parsedURL = URL(string: url) {
-            self.init(url: parsedURL, params: params, selfSignedSSL: selfSignedSSL)
+            self.init(url: parsedURL, params: params)
         }
         else {
             print("[Birdsong] Invalid URL in init. Defaulting to localhost URL.")
@@ -57,7 +55,7 @@ public final class Socket {
                             path: String = "socket", transport: String = "websocket",
                             params: [String: String]? = nil, selfSignedSSL: Bool = false) {
         let url = "\(prot)://\(host):\(port)/\(path)/\(transport)"
-        self.init(url: url, params: params, selfSignedSSL: selfSignedSSL)
+        self.init(url: url, params: params)
     }
 
     // MARK: - Connection
@@ -152,13 +150,13 @@ extension Socket: WebSocketDelegate {
 
     // MARK: - WebSocketDelegate
 
-    public func websocketDidConnect(_ socket: WebSocket) {
+    public func websocketDidConnect(socket: WebSocket) {
         log("Connected to: \(socket.currentURL)")
         onConnect?()
         queueHeartbeat()
     }
 
-    public func websocketDidDisconnect(_ socket: WebSocket, error: NSError?) {
+    public func websocketDidDisconnect(socket: WebSocket, error: NSError?) {
         log("Disconnected from: \(socket.currentURL)")
         onDisconnect?(error)
 
@@ -167,7 +165,7 @@ extension Socket: WebSocketDelegate {
         channels.removeAll()
     }
 
-    public func websocketDidReceiveMessage(_ socket: WebSocket, text: String) {
+    public func websocketDidReceiveMessage(socket: WebSocket, text: String) {
         do {
             let data = text.data(using: String.Encoding.utf8)
             if let response = Response(data: data!) {
@@ -189,7 +187,7 @@ extension Socket: WebSocketDelegate {
         }
     }
 
-    public func websocketDidReceiveData(_ socket: WebSocket, data: Data) {
+    public func websocketDidReceiveData(socket: WebSocket, data: Data) {
         log("Received data: \(data)")
     }
 }
