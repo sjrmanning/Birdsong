@@ -79,11 +79,13 @@ open class Channel {
 
     // MARK: - Callbacks
 
+    @discardableResult
     open func on(_ event: String, callback: @escaping (Response) -> ()) -> Self {
         callbacks[event] = callback
         return self
     }
 
+    @discardableResult
     open func onPresenceUpdate(_ callback: @escaping (Presence) -> ()) -> Self {
         presenceStateCallback = callback
         return self
