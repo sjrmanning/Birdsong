@@ -8,10 +8,10 @@
 
 import Foundation
 
-open class Push {
-    open let topic: String
-    open let event: String
-    open let payload: [String: AnyObject]
+public class Push {
+    public let topic: String
+    public let event: String
+    public let payload: Socket.Payload
     let ref: String?
 
     var receivedStatus: String?
@@ -33,13 +33,14 @@ open class Push {
         return try JSONSerialization.data(withJSONObject: dict, options: JSONSerialization.WritingOptions())
     }
 
-    init(_ event: String, topic: String, payload: [String: AnyObject], ref: String = UUID().uuidString) {
+    init(_ event: String, topic: String, payload: Socket.Payload, ref: String = UUID().uuidString) {
         (self.topic, self.event, self.payload, self.ref) = (topic, event, payload, ref)
     }
 
     // MARK: - Callback registration
 
-    open func receive(_ status: String, callback: @escaping (Socket.Payload) -> ()) -> Self {
+    @discardableResult
+    public func receive(_ status: String, callback: @escaping (Socket.Payload) -> ()) -> Self {
         if (receivedStatus == status) {
             callback(receivedResponse!)
         }
@@ -55,7 +56,8 @@ open class Push {
         return self
     }
 
-    open func always(_ callback: @escaping () -> ()) -> Self {
+    @discardableResult
+    public func always(_ callback: @escaping () -> ()) -> Self {
         alwaysCallbacks.append(callback)
         return self
     }

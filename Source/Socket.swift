@@ -11,7 +11,7 @@ import Starscream
 
 public final class Socket {
     // MARK: - Convenience aliases
-    public typealias Payload = [String: AnyObject]
+    public typealias Payload = [String: Any]
 
     // MARK: - Properties
 
