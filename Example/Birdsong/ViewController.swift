@@ -64,13 +64,13 @@ class ViewController: UIViewController {
 
         // After connection, set up a channel and join it.
         socket.onConnect = {
-            self.channel = self.socket.channel("rooms:birdsong", payload: ["user": "test" as AnyObject])
+            self.channel = self.socket.channel("zone:", payload: ["user": "test"])
 
-            let _ = self.channel?.on("new:msg", callback: { response in
+            self.channel?.on("new:msg", callback: { response in
                 self.lastMessageLabel.text = "Received message: \(response.payload["body"]!)"
             })
 
-            let _ = self.channel?.join().receive("ok", callback: { payload in
+            self.channel?.join().receive("ok", callback: { payload in
                 self.lastMessageLabel.text = "Joined channel: \(self.channel!.topic)"
             }).receive("error", callback: { payload in
                 self.lastMessageLabel.text = "Failed joining channel."
@@ -82,7 +82,7 @@ class ViewController: UIViewController {
     }
 
     func sendMessage() {
-        let _ = self.channel?.send("new:msg", payload: ["body": "\(messageCount)" as AnyObject]).always {
+        self.channel?.send("new:msg", payload: ["body": "\(messageCount)"]).always {
             self.messageCount += 1
         }
     }
