@@ -35,6 +35,7 @@ open class Channel {
 
     // MARK: - Control
 
+    @discardableResult
     open func join() -> Push {
         state = .Joining
 
@@ -43,6 +44,7 @@ open class Channel {
         })
     }
 
+    @discardableResult
     open func leave() -> Push {
         state = .Leaving
 
@@ -51,6 +53,7 @@ open class Channel {
         })
     }
 
+    @discardableResult
     open func send(_ event: String,
                      payload: Socket.Payload) -> Push {
         let message = Push(event, topic: topic, payload: payload)
