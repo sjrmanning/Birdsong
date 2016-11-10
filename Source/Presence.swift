@@ -80,11 +80,11 @@ public final class Presence {
             let metas = entry["metas"] as? [Meta]
             if let refsToDelete = metas?.flatMap({ $0["phx_ref"] as? String }) {
                 existing = existing.filter {
-                    if let phxRef = $0["pxh_ref"] as? String {
+                    if let phxRef = $0["phx_ref"] as? String {
                         return !refsToDelete.contains(phxRef)
                     }
                     
-                    return false
+                    return true
                 }
                 state[id] = existing
             }
