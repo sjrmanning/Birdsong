@@ -1,5 +1,5 @@
 PODS:
-  - Birdsong (0.2.1):
+  - Birdsong (0.4.2):
     - Starscream (~> 2.0)
   - Starscream (2.0.0)
 
@@ -11,9 +11,9 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  Birdsong: da726e705ef8b7c9e73b508950f3c4e42f19b050
+  Birdsong: 8ce6b370d8d6e2313c8a2922be647f1d0c946840
   Starscream: 947c865596f0d6bb3f0203fee23228ed2d471468
 
 PODFILE CHECKSUM: fd31310a2947ba719ecd745ba9c1838097125604
 
-COCOAPODS: 1.1.0.rc.3
+COCOAPODS: 1.1.1

@@ -65,7 +65,7 @@ public class Push {
     // MARK: - Response handling
 
     func handleResponse(_ response: Response) {
-        receivedStatus = response.payload["status"] as! String
+        receivedStatus = response.payload["status"] as? String
         receivedResponse = response.payload
 
         fireCallbacksAndCleanup()

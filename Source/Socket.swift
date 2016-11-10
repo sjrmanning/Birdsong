@@ -100,7 +100,7 @@ public final class Socket {
         }
 
         let ref = Socket.HeartbeatPrefix + UUID().uuidString
-        send(Push(Event.Heartbeat, topic: "phoenix", payload: [:], ref: ref))
+        _ = send(Push(Event.Heartbeat, topic: "phoenix", payload: [:], ref: ref))
         queueHeartbeat()
     }
 
@@ -123,9 +123,7 @@ public final class Socket {
             let data = try message.toJson()
             log("Sending: \(message.payload)")
             awaitingResponses[message.ref!] = message
-            if let s = socket as? WebSocket {
-                s.write(data: data, completion: nil)
-            }
+            socket.write(data: data, completion: nil)
         } catch let error as NSError {
             log("Failed to send message: \(error)")
             message.handleParseError()
@@ -166,24 +164,19 @@ extension Socket: WebSocketDelegate {
     }
 
     public func websocketDidReceiveMessage(socket: WebSocket, text: String) {
-        do {
-            let data = text.data(using: String.Encoding.utf8)
-            if let response = Response(data: data!) {
-                defer {
-                    awaitingResponses.removeValue(forKey: response.ref)
-                }
-
-                log("Received message: \(response.payload)")
-
-                if let push = awaitingResponses[response.ref] {
-                    push.handleResponse(response)
-                }
-
-            channels[response.topic]?.received(response)
+        let data = text.data(using: String.Encoding.utf8)
+        if let response = Response(data: data!) {
+            defer {
+                awaitingResponses.removeValue(forKey: response.ref)
             }
-        }
-        catch {
-            fatalError("Couldn't parse response: \(text)")
+            
+            log("Received message: \(response.payload)")
+            
+            if let push = awaitingResponses[response.ref] {
+                push.handleResponse(response)
+            }
+            
+            channels[response.topic]?.received(response)
         }
     }
 
