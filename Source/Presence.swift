@@ -78,24 +78,31 @@ public final class Presence {
 
             // Otherwise, we need to find the phx_ref keys to delete.
             let metas = entry["metas"] as? [Meta]
-            let refsToDelete = metas?.map { $0["phx_ref"] as! String }
-            existing = existing.filter { !refsToDelete!.contains($0["phx_ref"]! as! String) }
-            state[id] = existing
+            if let refsToDelete = metas?.flatMap({ $0["phx_ref"] as? String }) {
+                existing = existing.filter {
+                    if let phxRef = $0["phx_ref"] as? String {
+                        return !refsToDelete.contains(phxRef)
+                    }
+                    
+                    return true
+                }
+                state[id] = existing
+            }
         }
     }
 
     func syncJoins(_ diff: Diff) {
         diff.forEach { id, entry in
-            let metas = entry["metas"] as? [Meta]
-
-            if var existing = state[id] {
-                existing += metas!
+            if let metas = entry["metas"] as? [Meta] {
+                if var existing = state[id] {
+                    existing += metas
+                }
+                else {
+                    state[id] = metas
+                }
+                
+                metas.forEach { onJoin?(id, $0) }
             }
-            else {
-                state[id] = metas
-            }
-
-            metas?.forEach { onJoin?(id, $0) }
         }
     }
 

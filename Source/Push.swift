@@ -41,8 +41,9 @@ public class Push {
 
     @discardableResult
     public func receive(_ status: String, callback: @escaping (Socket.Payload) -> ()) -> Self {
-        if (receivedStatus == status) {
-            callback(receivedResponse!)
+        if receivedStatus == status,
+            let receivedResponse = receivedResponse {
+            callback(receivedResponse)
         }
         else {
             if (callbacks[status] == nil) {
@@ -65,7 +66,7 @@ public class Push {
     // MARK: - Response handling
 
     func handleResponse(_ response: Response) {
-        receivedStatus = response.payload["status"] as! String
+        receivedStatus = response.payload["status"] as? String
         receivedResponse = response.payload
 
         fireCallbacksAndCleanup()
@@ -90,8 +91,9 @@ public class Push {
 
         alwaysCallbacks.forEach({$0()})
 
-        if let matchingCallbacks = callbacks[status] {
-            matchingCallbacks.forEach({$0(receivedResponse!)})
+        if let matchingCallbacks = callbacks[status],
+            let receivedResponse = receivedResponse {
+            matchingCallbacks.forEach({$0(receivedResponse)})
         }
     }
 }

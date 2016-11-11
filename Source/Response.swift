@@ -16,16 +16,20 @@ open class Response {
 
     init?(data: Data) {
         do {
-            let jsonObject = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions()) as! Socket.Payload
-            if let ref = jsonObject["ref"] as? String {
-                self.ref = ref
+            guard let jsonObject = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions()) as? Socket.Payload else { return nil }
+            
+            ref = jsonObject["ref"] as? String ?? ""
+            
+            if let topic = jsonObject["topic"] as? String,
+                let event = jsonObject["event"] as? String,
+                let payload = jsonObject["payload"] as? Socket.Payload {
+                self.topic = topic
+                self.event = event
+                self.payload = payload
             }
             else {
-                self.ref = ""
+                return nil
             }
-            topic = jsonObject["topic"] as! String
-            event = jsonObject["event"] as! String
-            payload = jsonObject["payload"] as! Socket.Payload
         }
         catch {
             return nil
