@@ -1,18 +1,18 @@
 PODS:
-  - Birdsong (0.4.2):
-    - Starscream (~> 2.0)
-  - Starscream (2.0.0)
+  - Birdsong (0.4.3):
+    - Starscream (= 2.0.1)
+  - Starscream (2.0.1)
 
 DEPENDENCIES:
   - Birdsong (from `../`)
 
 EXTERNAL SOURCES:
   Birdsong:
-    :path: "../"
+    :path: ../
 
 SPEC CHECKSUMS:
-  Birdsong: 8ce6b370d8d6e2313c8a2922be647f1d0c946840
-  Starscream: 947c865596f0d6bb3f0203fee23228ed2d471468
+  Birdsong: ef8ba40979ce22db1d4507fb38110dba0d84ee91
+  Starscream: ce7a202d95615bd4113bc5a0f1932f1db8c808a4
 
 PODFILE CHECKSUM: fd31310a2947ba719ecd745ba9c1838097125604
 

@@ -87,8 +87,8 @@ public final class Socket {
     }
     
     public func remove(_ channel: Channel) {
-        channel.leave().receive("ok") { response in
-            self.channels.removeValue(forKey: channel.topic)
+        channel.leave().receive("ok") { [weak self] response in
+            self?.channels.removeValue(forKey: channel.topic)
         }
     }
     
