@@ -26,11 +26,17 @@ open class Channel {
         self.topic = topic
         self.params = params
         self.state = .Closed
-        self.presence = Presence(state: Presence.PresenceState())
+        self.presence = Presence()
 
         // Register presence handling.
-        on("presence_state", callback: presenceState)
-        on("presence_diff", callback: presenceDiff)
+		on("presence_state") { [weak self] (response) in
+			self?.presence.sync(response)
+			guard let presence = self?.presence else {return}
+			self?.presenceStateCallback?(presence)
+		}
+		on("presence_diff") { [weak self] (response) in
+			self?.presence.sync(response)
+		}
     }
 
     // MARK: - Control
@@ -58,18 +64,6 @@ open class Channel {
                      payload: Socket.Payload) -> Push? {
         let message = Push(event, topic: topic, payload: payload)
         return socket?.send(message)
-    }
-
-    // MARK: - Presence
-
-    fileprivate func presenceState(_ response: Response) {
-        presence.sync(response)
-
-        presenceStateCallback?(presence)
-    }
-
-    fileprivate func presenceDiff(_ response: Response) {
-        presence.sync(response)
     }
 
     // MARK: - Raw events

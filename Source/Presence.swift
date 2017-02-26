@@ -27,7 +27,7 @@ public final class Presence {
 
     // MARK: - Initialisation
 
-    init(state: PresenceState) {
+    init(state: PresenceState = Presence.PresenceState()) {
         self.state = state
     }
 
