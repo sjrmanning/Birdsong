@@ -13,7 +13,7 @@ public final class Presence {
 
     public typealias PresenceState = [String: [Meta]]
     public typealias Diff = [String: [String: Any]]
-    public typealias Meta = [String: AnyObject]
+    public typealias Meta = [String: Any]
 
     // MARK: - Properties
 

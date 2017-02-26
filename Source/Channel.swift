@@ -13,7 +13,7 @@ open class Channel {
 
     open let topic: String
     open let params: Socket.Payload
-    fileprivate let socket: Socket
+    fileprivate weak var socket: Socket?
     fileprivate(set) open var state: State
 
     fileprivate(set) open var presence: Presence
@@ -36,28 +36,28 @@ open class Channel {
     // MARK: - Control
 
     @discardableResult
-    open func join() -> Push {
+    open func join() -> Push? {
         state = .Joining
 
-        return send(Socket.Event.Join, payload: params).receive("ok", callback: { response in
+        return send(Socket.Event.Join, payload: params)?.receive("ok", callback: { response in
             self.state = .Joined
         })
     }
 
     @discardableResult
-    open func leave() -> Push {
+    open func leave() -> Push? {
         state = .Leaving
 
-        return send(Socket.Event.Leave, payload: [:]).receive("ok", callback: { response in
+        return send(Socket.Event.Leave, payload: [:])?.receive("ok", callback: { response in
             self.state = .Closed
         })
     }
 
     @discardableResult
     open func send(_ event: String,
-                     payload: Socket.Payload) -> Push {
+                     payload: Socket.Payload) -> Push? {
         let message = Push(event, topic: topic, payload: payload)
-        return socket.send(message)
+        return socket?.send(message)
     }
 
     // MARK: - Presence
