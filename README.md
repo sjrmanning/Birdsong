@@ -64,7 +64,7 @@ Available on CocoaPods:
 platform :ios, '9.0'
 use_frameworks!
 
-pod 'Birdsong', '~> 0.4'
+pod 'Birdsong', '~> 0.5'
 ```
 
 If you need Swift 2.2 compatibility, please use version `0.2.2`.
