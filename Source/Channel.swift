@@ -55,6 +55,7 @@ open class Channel {
         state = .Leaving
 
         return send(Socket.Event.Leave, payload: [:])?.receive("ok", callback: { response in
+	    self.callbacks.removeAll()
             self.state = .Closed
         })
     }
