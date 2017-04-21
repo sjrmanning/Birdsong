@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'Birdsong'
-  s.version          = '0.5.1'
+  s.version          = '0.5.2'
   s.summary          = 'WebSockets client for Phoenix Channels.'
   s.homepage         = 'https://github.com/sjrmanning/Birdsong'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
