@@ -119,6 +119,11 @@ public final class Socket {
     }
     
     func send(_ message: Push) -> Push {
+        if !socket.isConnected {
+            message.handleNotConnected()
+            return message
+        }
+
         do {
             let data = try message.toJson()
             log("Sending: \(message.payload)")

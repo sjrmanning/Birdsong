@@ -79,6 +79,13 @@ public class Push {
         fireCallbacksAndCleanup()
     }
 
+    func handleNotConnected() {
+        receivedStatus = "error"
+        receivedResponse = ["reason": "Not connected to socket." as AnyObject]
+
+        fireCallbacksAndCleanup()
+    }
+
     func fireCallbacksAndCleanup() {
         defer {
             callbacks.removeAll()
