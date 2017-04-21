@@ -56,6 +56,9 @@ open class Channel {
 
         return send(Socket.Event.Leave, payload: [:])?.receive("ok", callback: { response in
 	    self.callbacks.removeAll()
+	    self.presence.onJoin = nil
+            self.presence.onLeave = nil
+            self.presence.onStateChange = nil
             self.state = .Closed
         })
     }
