@@ -16,15 +16,18 @@ import Birdsong
 
 …
 
+// in your View Controller / Client class
 let socket = Socket(url: NSURL(string: "http://localhost:4000/socket/websocket")!)
+
+…
 
 socket.onConnect = {
     let channel = self.socket.channel("rooms:some-topic", payload: ["user": "spartacus"])
     channel.on("new:msg", callback: { message in
-        self.displayMessage(message)
+        print("New message: \(message)")
     })
 
-    channel.join().receive("ok", callback: { payload in
+    channel.join()?.receive("ok", callback: { payload in
         print("Successfully joined: \(channel.topic)")
     })
 
