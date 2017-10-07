@@ -18,8 +18,8 @@ import Birdsong
 
 …
 
-// in your View Controller / Client class
-let socket = Socket(url: NSURL(string: "http://localhost:4000/socket/websocket")!)
+// In your view controller / client
+let socket = Socket(url: NSURL(string: "http://localhost:4000/socket/websocket")!, params: ["key": "secret"])
 
 …
 
@@ -55,6 +55,8 @@ socket.onConnect = {
         print("Leave: user with id \(id) with meta entry: \(meta)")
     }
 }
+
+socket.connect()
 ```
 
 ## Example
