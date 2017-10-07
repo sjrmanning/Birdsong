@@ -81,7 +81,7 @@ class ViewController: UIViewController {
         socket.connect()
     }
 
-    func sendMessage() {
+    @objc func sendMessage() {
         self.channel?.send("new:msg", payload: ["body": "\(messageCount)"])?.always {
             self.messageCount += 1
         }

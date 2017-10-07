@@ -8,6 +8,8 @@ An iOS & OS X WebSockets client for use with [Phoenix](http://www.phoenixframewo
 
 As of version 0.3.0, Birdsong requires Swift 3.0+. Please use version 0.2.2 if you need Swift 2.2 support.
 
+Version 0.6 onwards supports Swift 4 using Starscream 3.0.
+
 
 ## Usage
 
@@ -64,7 +66,7 @@ Available on CocoaPods:
 platform :ios, '9.0'
 use_frameworks!
 
-pod 'Birdsong', '~> 0.5'
+pod 'Birdsong', '~> 0.6'
 ```
 
 If you need Swift 2.2 compatibility, please use version `0.2.2`.
