@@ -12,7 +12,7 @@ import Birdsong
 
 class ViewController: UIViewController {
 
-    let socket = Socket(url: "http://localhost:4000/socket/websocket", params: ["user_id": "asdf"])
+    let socket = Socket(url: "http://localhost:4000/socket/websocket", params: ["user_id": "456"])
     var channel: Channel?
 
     var lastMessageLabel: UILabel
@@ -42,12 +42,13 @@ class ViewController: UIViewController {
 
         let viewSize = view.frame.size
 
+        lastMessageLabel.numberOfLines = 0
         lastMessageLabel.frame = CGRect(x: viewSize.width * 0.1,
                                         y: viewSize.height * 0.15,
                                         width: viewSize.width * 0.8,
                                         height: 100)
 
-        sendMessageButton.setTitle("Send test message", for: UIControlState())
+        sendMessageButton.setTitle("Send message", for: UIControlState())
         sendMessageButton.setTitleColor(UIColor.red, for: UIControlState())
         sendMessageButton.addTarget(self,
                                     action: #selector(sendMessage),
@@ -82,7 +83,7 @@ class ViewController: UIViewController {
     }
 
     @objc func sendMessage() {
-        self.channel?.send("new:msg", payload: ["body": "\(messageCount)"])?.always {
+        self.channel?.send("new:msg", payload: ["body": "Hello, message no. \(messageCount)"])?.always {
             self.messageCount += 1
         }
     }

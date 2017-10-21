@@ -61,7 +61,7 @@ socket.connect()
 
 ## Example
 
-To run the example project, clone the repo, and run `pod install` from the Example directory first.
+To run the example project, clone the repo, and run `pod install` from the Example directory first, then use the Birdsong.xcworkspace Xcode workspace. The example is configured to work directly with the [Phoenix Chat Example](https://github.com/chrismccord/phoenix_chat_example). It simply connects to `localhost:4000`, joins the `rooms:lobby` channel, and logs each received message. The “Send message” button will send a message to the channel with an incrementing count.
 
 ## Installation
 
