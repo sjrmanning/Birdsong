@@ -21,6 +21,8 @@ public final class Socket {
     public var onConnect: (() -> ())?
     public var onDisconnect: ((Error?) -> ())?
     
+    public var dataToTextConvertor: ((NSData?) -> String?)?
+    
     fileprivate(set) public var channels: [String: Channel] = [:]
     
     fileprivate static let HeartbeatInterval = Int64(30 * NSEC_PER_SEC)
@@ -189,6 +191,11 @@ extension Socket: WebSocketDelegate {
     }
 
     public func websocketDidReceiveData(socket: WebSocketClient, data: Data) {
+        if let convertor = dataToTextConvertor {
+            if let textData = convertor(data as NSData) {
+                websocketDidReceiveMessage(socket: socket, text: textData)
+            }
+        }
         log("Received data: \(data)")
     }
 }
