@@ -12,7 +12,7 @@ open class Channel {
     // MARK: - Properties
 
     open let topic: String
-    open let params: Socket.Payload
+    public private(set) var params: Socket.Payload
     fileprivate weak var socket: Socket?
     fileprivate(set) open var state: State
 
@@ -42,7 +42,9 @@ open class Channel {
     // MARK: - Control
 
     @discardableResult
-    open func join() -> Push? {
+    open func join(params: Socket.Payload = [:]) -> Push? {
+        self.params = params
+        
         state = .Joining
 
         return send(Socket.Event.Join, payload: params)?.receive("ok", callback: { response in
