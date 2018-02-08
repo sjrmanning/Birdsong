@@ -95,7 +95,7 @@ public final class Presence {
         diff.forEach { id, entry in
             if let metas = entry["metas"] as? [Meta] {
                 if var existing = state[id] {
-                    existing += metas
+                    state[id] = existing + metas
                 }
                 else {
                     state[id] = metas
