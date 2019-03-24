@@ -37,6 +37,12 @@ open class Channel {
 		on("presence_diff") { [weak self] (response) in
 			self?.presence.sync(response)
 		}
+
+        //Recover Channel
+        on(Socket.Event.Error) { [weak self] (response) in
+            self?.state = .Errored
+            self?.join()
+        }
     }
 
     // MARK: - Control
