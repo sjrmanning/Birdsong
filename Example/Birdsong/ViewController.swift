@@ -48,8 +48,8 @@ class ViewController: UIViewController {
                                         width: viewSize.width * 0.8,
                                         height: 100)
 
-        sendMessageButton.setTitle("Send message", for: UIControlState())
-        sendMessageButton.setTitleColor(UIColor.red, for: UIControlState())
+        sendMessageButton.setTitle("Send message", for: UIControl.State())
+        sendMessageButton.setTitleColor(UIColor.red, for: UIControl.State())
         sendMessageButton.addTarget(self,
                                     action: #selector(sendMessage),
                                     for: .touchUpInside)
