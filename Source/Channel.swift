@@ -11,8 +11,8 @@ import Foundation
 open class Channel {
     // MARK: - Properties
 
-    open let topic: String
-    open let params: Socket.Payload
+    public let topic: String
+    public let params: Socket.Payload
     fileprivate weak var socket: Socket?
     fileprivate(set) open var state: State
 

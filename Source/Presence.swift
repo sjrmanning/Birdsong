@@ -78,7 +78,7 @@ public final class Presence {
 
             // Otherwise, we need to find the phx_ref keys to delete.
             let metas = entry["metas"] as? [Meta]
-            if let refsToDelete = metas?.flatMap({ $0["phx_ref"] as? String }) {
+            if let refsToDelete = metas?.compactMap({ $0["phx_ref"] as? String }) {
                 existing = existing.filter {
                     if let phxRef = $0["phx_ref"] as? String {
                         return !refsToDelete.contains(phxRef)
